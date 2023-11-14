@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <title>FlaskApp</title>
+</head>
+<body>
+    <h1>Prepare the Schedule for the Day!</h1>
+    <br>
+
+    <form action="/process_form" method="POST">
+        <div class="container">
+            <table id="example" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Airport Name</th>
+                        <th>ICAO</th>
+                        <th>Include?</th>
+                        <th>Number of Airplanes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for airport, details in airportDict.items() %}
+                        <tr>
+                            <td>{{ airport }}</td>
+                            <td>{{ details['ICAO'] }}</td>
+                            <td>
+                                <div class="form-check form-check-lg">
+                                    <input class="form-check-input" type="checkbox" name="selectedAirports" value="{{ airport }}"checked>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="number" class="form-control form-control-sm" name="numAirplanes[{{ airport }}]" min="0" value="1" style="width: 200px;">
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <script defer src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script defer src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+    <script defer>
+        $(document).ready(function() {
+            ('#example').DataTable();
+        });
+    </script>
+</body>
+</html>
