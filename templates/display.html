@@ -8,22 +8,69 @@
 </head>
 <body>
     <div class="container">
-        <h1>Map</h1>
+        <h1>Map for Hour {{ hour }}</h1>
         {{ mapBody|safe }}
+
+        <div class="row">
+            <div class="col-auto">
+                <p style="color: black; font-size: 20px;">Color Code:</p>
+            </div>
+            <div class="col-auto">
+                <p style="color: blue; font-size: 20px;">First Flight</p>
+            </div>
+            <div class="col-auto">
+                <p style="color: red; font-size: 20px;">Second Flight</p>
+            </div>
+            <div class="col-auto">
+                <p style="color: green; font-size: 20px;">Third Flight</p>
+            </div>
+            <div class="col-auto">
+                <p style="color: orange; font-size: 20px;">Fourth Flight</p>
+            </div>
+            <div class="col-auto">
+                <p style="color: purple; font-size: 20px;">Fifth Flight</p>
+            </div>
+        </div>
     </div>
 
-    <div class="container">
-        <h3>Success!</h3>
+    <br>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-3">
+                <a href="/" class="btn btn-info btn-lg" role="button">Back to Home!</a>
+            </div>
+            <div class="col-lg-3">
+                <a id="pauseButton" class="btn btn-danger btn-lg" role="button" onclick="pauseTimer()">Pause</a>
+            </div>
+            <div class="col-lg-3">
+                <a id="resumeButton" class="btn btn-success btn-lg" role="button" onclick="startTimer()">Resume</a>
+            </div>
+            <div class="col-lg-3">
+                <a href="/end" class="btn btn-info btn-lg" role="button">End Simulation</a>
+            </div>
+        </div>
     </div>
 
     <script>
         {{ script|safe }}
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        
+
         // Timer for redirection after a certain time (e.g., 5 seconds)
-        setTimeout(function() {
-            window.location.href = "/add_marker/{{ next_hour }}";  // Replace with the appropriate URL
-        }, 2500);  // Time in milliseconds (5 seconds in this example)
+        var timer;
+
+        function startTimer() {
+            timer = setTimeout(function() {
+                window.location.href = "/add_marker/{{ next_hour }}";  // Replace with the appropriate URL
+            }, 2500);  // Time in milliseconds (5 seconds in this example)
+        }
+
+        function pauseTimer() {
+            alert("Timer Paused.");
+            clearTimeout(timer);
+        }
+
+        startTimer();  // Start the timer initially
     </script>
 </body>
 </html>

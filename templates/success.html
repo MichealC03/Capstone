@@ -6,9 +6,42 @@
     <title>FlaskApp</title>
 </head>
 <body>
-    <h1>Review</h1>
+    <h1>Review Your Schedule</h1>
     <br>
-    <a href="/add_marker/0" class="btn btn-info btn-lg" role="button">Next Hour</a>
+
+    <form action="/" method="POST"></form>
+        <div class="container">
+            <table id="example" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Airport Name</th>
+                        <th>Number of Airplanes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for airport, col in planesDf.iterrows() %}
+                        <tr>
+                            <td>{{ airport }}</td>
+                            <td>{{ col['numPlanes'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-3">
+                    <a href="/add_marker/0" class="btn btn-info btn-lg mb-3" role="button">Run Simulation!</a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/" class="btn btn-info btn-lg" role="button">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </form>
 
     <script defer src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script defer src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
@@ -20,3 +53,4 @@
     </script>
 </body>
 </html>
+

@@ -27,18 +27,26 @@
                             <td>{{ details['ICAO'] }}</td>
                             <td>
                                 <div class="form-check form-check-lg">
-                                    <input class="form-check-input" type="checkbox" name="selectedAirports" value="{{ airport }}"checked>
+                                    <input class="form-check-input" type="checkbox" name="selectedAirports" value="{{ airport }}">
                                 </div>
                             </td>
                             <td>
-                                <input type="number" class="form-control form-control-sm" name="numAirplanes[{{ airport }}]" min="0" value="1" style="width: 200px;">
+                                <input type="number" class="form-control form-control-sm" name="numAirplanes[{{ airport }}]" min="1" max="5" value="1" style="width: 200px;">
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-3">
+                    <button type="submit" class="btn btn-info btn-lg">Submit</button>
+                </div>
+            </div>
+            
+        </div>
+        
     </form>
 
     <script defer src="https://code.jquery.com/jquery-3.7.0.js"></script>
