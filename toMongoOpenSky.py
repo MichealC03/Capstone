@@ -2,15 +2,14 @@ from pyopensky.impala import Impala
 import matplotlib.pyplot as plt
 from folium import PolyLine
 import pandas as pd
-import folium 
 from folium import plugins
 import pymongo
-import json
+import os
 
 # Create an instance of the Impala class with authentication credentials
 opensky = Impala(
-    username="MCallahan03",
-    password="Soccer21!",
+    username=os.getenv("OPENSKY_API_UNAME"),
+    password=os.getenv("OPENSKY_API_PWRD"),
     host="data.opensky-network.org",
     port=2230  # The port for the Impala shell
 )
