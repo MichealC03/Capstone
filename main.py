@@ -13,7 +13,8 @@ amadeus = Client(
 )
 
 #Connect to mongo
-client = pymongo.MongoClient("mongodb+srv://michealcallahan24:apple@capstone.8yr2tov.mongodb.net/")
+databaseInfo = os.getenv("FLIGHT_MONGO_INFO")
+client = pymongo.MongoClient(databaseInfo)
 
 #Dictionary with all airports that Hawaiian Airlines flies to
 airportDict = {
