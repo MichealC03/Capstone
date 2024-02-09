@@ -18,20 +18,21 @@ client = pymongo.MongoClient(databaseInfo)
 
 #Dictionary with all airports that Hawaiian Airlines flies to
 airportDict = {
-"Austin": {"ICAO": "KAUS", "latitude": 30.2025, "longitude": -97.6650},
-"Boston": {"ICAO": "KBOS", "latitude": 42.3641, "longitude": -71.0052},
-"Vegas": {"ICAO": "KLAS", "latitude": 36.0840, "longitude": -115.1536},
-"Long Beach": {"ICAO": "KLGB", "latitude": 33.8177, "longitude": -118.1516},
-"Los Angeles": {"ICAO": "KLAX", "latitude": 33.9416, "longitude": -118.4085},
-"Oakland": {"ICAO": "KOAK", "latitude": 37.7214, "longitude": -122.2208},
-"Ontario": {"ICAO": "KONT", "latitude": 34.0551, "longitude": -117.6006},
-"Phoenix": {"ICAO": "KPHX", "latitude": 33.4342, "longitude": -112.0080},
-"Portland": {"ICAO": "KPDX", "latitude": 45.5898, "longitude": -122.5951},
-"Sacramento": {"ICAO": "KSMF", "latitude": 38.6957, "longitude": -121.5908},
-"San Diego": {"ICAO": "KSAN", "latitude": 32.7336, "longitude": -117.1897},
-"San Francisco": {"ICAO": "KSFO", "latitude": 37.7749, "longitude": -122.4194},
-"San Jose": {"ICAO": "KSJC", "latitude": 37.3541, "longitude": -121.9375},
-"Seattle": {"ICAO": "KSEA", "latitude": 47.4502, "longitude": -122.3088}
+"Austin": {"ICAO": "KAUS", "latitude": 30.2025, "longitude": -97.6650, "miles": 3750},
+"Boston": {"ICAO": "KBOS", "latitude": 42.3641, "longitude": -71.0052, "miles": 5085},
+"Vegas": {"ICAO": "KLAS", "latitude": 36.0840, "longitude": -115.1536, "miles": 2751},
+"Long Beach": {"ICAO": "KLGB", "latitude": 33.8177, "longitude": -118.1516, "miles": 2494},
+"Los Angeles": {"ICAO": "KLAX", "latitude": 33.9416, "longitude": -118.4085, "miles": 2556},
+"Oakland": {"ICAO": "KOAK", "latitude": 37.7214, "longitude": -122.2208, "miles": 2397},
+"Ontario": {"ICAO": "KONT", "latitude": 34.0551, "longitude": -117.6006, "miles": 2512},
+"Phoenix": {"ICAO": "KPHX", "latitude": 33.4342, "longitude": -112.0080, "miles": 2883},
+"Portland": {"ICAO": "KPDX", "latitude": 45.5898, "longitude": -122.5951, "miles": 2674},
+"Sacramento": {"ICAO": "KSMF", "latitude": 38.6957, "longitude": -121.5908, "miles": 2560},
+"San Diego": {"ICAO": "KSAN", "latitude": 32.7336, "longitude": -117.1897, "miles": 2614},
+"San Francisco": {"ICAO": "KSFO", "latitude": 37.7749, "longitude": -122.4194, "miles": 2397},
+"San Jose": {"ICAO": "KSJC", "latitude": 37.3541, "longitude": -121.9375, "miles": 2403},
+"Seattle": {"ICAO": "KSEA", "latitude": 47.4502, "longitude": -122.3088, "miles": 2677},
+"New York City": {"ICAO": "KJFK", "latitude": 40.6413, "longitude": -73.7781, "miles": 4982}
 }
 
 #Df with the choices of the user and what their airports they want to fly from are
@@ -51,9 +52,23 @@ def end():
     """
     Purpose: Route to the end and display statistics from the last and previous runs
     """
+    # Get the operating prices for the flights
+    userChoiceDf['Operating Cost ALL Flights'] = getPrices(userChoiceDf)
 
-    userChoiceDf['Flight Price'] = getPrices(userChoiceDf)
-    
+    # Convert the columns to float
+    userChoiceDf['Operating Cost ALL Flights'] = userChoiceDf['Operating Cost ALL Flights'].astype(float)
+    userChoiceDf['numPlanes'] = userChoiceDf['numPlanes'].astype(int)
+
+    # Get the operating cost per flight
+    userChoiceDf['Operating Cost PER Flight'] = userChoiceDf['Operating Cost ALL Flights'].div(userChoiceDf['numPlanes'])
+
+    #Round the columns to 2 decimal places
+    cols_to_round = ['Operating Cost PER Flight', 'Operating Cost ALL Flights']
+    userChoiceDf[cols_to_round] = userChoiceDf[cols_to_round].round(2)
+
+    # Convert the numPlanes to string
+    userChoiceDf['numPlanes'] = userChoiceDf['numPlanes'].astype(str)
+
     return render_template('end.html',userChoiceDf=userChoiceDf)
 
 @app.route('/process_form', methods=['POST'])
@@ -108,36 +123,49 @@ def getPrices(df):
     ARGS:
         df dataframe: This is the dataframe that the user chose to simulate
     """
+    print(df)
     priceList = []
 
-    #For each airport in df get the price
-    for airport,data in df.iterrows():
-        #Remove the K from ICAO
-        airportInitials = df.loc[airport, 'ICAO']
-        airportInitials = airportInitials[1:]
+    # Get the Operating Cost Per ASM from https://newsroom.hawaiianairlines.com/releases/hawaiian-holdings-reports-2023-fourth-quarter-and-full-year-financial-results
+    operatingCostPerASM = 0.149
 
-        #Get plane Num for that airport in the simulation
+    #Get the total miles for the flight
+    for airport,data in df.iterrows():
+        miles = df.loc[airport, 'miles']
         planeNum = userChoiceDf.loc[airport, 'numPlanes']
 
-        #Get best offer for the flight
-        try:
-            response = amadeus.shopping.flight_offers_search.get(
-                originLocationCode=airportInitials, 
-                destinationLocationCode='HNL',
-                departureDate='2024-01-11',
-                returnDate='2024-01-18',
-                adults=2,
-                currencyCode="USD"
-                )
-            first_offer = response.data[0]
-            price = first_offer['price']['grandTotal']
+        #Get the price for the flight
+        price = miles * operatingCostPerASM * planeNum
+        priceList.append("{:.2f}".format(float(price)))
 
-            #Multiply times number of planes
-            price = float(price) * planeNum
+    # #For each airport in df get the price
+    # for airport,data in df.iterrows():
+    #     #Remove the K from ICAO
+    #     airportInitials = df.loc[airport, 'ICAO']
+    #     airportInitials = airportInitials[1:]
 
-            priceList.append("{:.2f}".format(float(price)))
-        except ResponseError as error:
-            print(error)
+    #     #Get plane Num for that airport in the simulation
+    #     planeNum = userChoiceDf.loc[airport, 'numPlanes']
+
+    #     #Get best offer for the flight
+    #     try:
+    #         response = amadeus.shopping.flight_offers_search.get(
+    #             originLocationCode=airportInitials, 
+    #             destinationLocationCode='HNL',
+    #             departureDate='2024-01-11',
+    #             returnDate='2024-01-18',
+    #             adults=2,
+    #             currencyCode="USD"
+    #             )
+    #         first_offer = response.data[0]
+    #         price = first_offer['price']['grandTotal']
+
+    #         #Multiply times number of planes
+    #         price = float(price) * planeNum
+
+    #         priceList.append("{:.2f}".format(float(price)))
+    #     except ResponseError as error:
+    #         print(error)
 
     return priceList
 

@@ -16,7 +16,8 @@
                     <tr>
                         <th>Airport Name</th>
                         <th>Number of Airplanes</th>
-                        <th>Total Price of Flights</th>
+                        <th>Operating Cost PER Flight</th>
+                        <th>Operating Cost ALL Flights</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,17 +25,12 @@
                         <tr>
                             <td>{{ airport }}</td>
                             <td>{{ col['numPlanes'] }}</td>
-                            <td>{{ col['Flight Price'] }}</td>
+                            <td>{{ col['Operating Cost PER Flight'] }}</td>
+                            <td>{{ col['Operating Cost ALL Flights'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <div class="row">
-                <div class="col-auto">
-                    <p style="color: black; font-size: 20px;">Total Price Calculated by 1/11/24 - 1/18/24 return flight 2 tickets currently.</p>
-                </div>
-                </div>
-            </div>
         </div>
 
         <br>
