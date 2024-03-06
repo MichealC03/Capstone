@@ -15,14 +15,18 @@
                 <thead>
                     <tr>
                         <th>Airport Name</th>
-                        <th>Number of Airplanes</th>
+                        <th>Number of Airplanes A321-NEO</th>
+                        <th>Number of Airplanes A330</th>
+                        <th>Number of Airplanes B787</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for airport, col in planesDf.iterrows() %}
                         <tr>
                             <td>{{ airport }}</td>
-                            <td>{{ col['numPlanes'] }}</td>
+                            <td>{{ col['numPlanesA321NEO'] }}</td>
+                            <td>{{ col['numPlanesA330'] }}</td>
+                            <td>{{ col['numPlanesB787'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

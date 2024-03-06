@@ -17,7 +17,9 @@
                         <th>Airport Name</th>
                         <th>ICAO</th>
                         <th>Include?</th>
-                        <th>Number of Airplanes</th>
+                        <th>Number of A321-NEO</th>
+                        <th>Number of A330</th>
+                        <th>Number of B787</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,7 +33,13 @@
                                 </div>
                             </td>
                             <td>
-                                <input type="number" class="form-control form-control-sm" name="numAirplanes[{{ airport }}]" min="1" max="5" value="1" style="width: 200px;">
+                                <input type="number" class="form-control form-control-sm" name="numAirplanesA321NEO[{{ airport }}]" min="0" max="5" value="0" style="width: 200px;">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control form-control-sm" name="numAirplanesA330[{{ airport }}]" min="0" max="5" value="0" style="width: 200px;">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control form-control-sm" name="numAirplanesB787[{{ airport }}]" min="0" max="5" value="0" style="width: 200px;">
                             </td>
                         </tr>
                     {% endfor %}
@@ -56,6 +64,7 @@
         $(document).ready(function() {
             ('#example').DataTable();
         });
+        
     </script>
 </body>
 </html>

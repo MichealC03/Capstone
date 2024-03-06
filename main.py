@@ -6,6 +6,7 @@ from flask import Flask, render_template, redirect, request
 import pymongo
 import os
 from amadeus import Client, ResponseError
+from analytics import getPrices
 
 amadeus = Client(
     client_id= os.getenv("AMADEUS_API_KEY"),
@@ -35,6 +36,14 @@ airportDict = {
 "New York City": {"ICAO": "KJFK", "latitude": 40.6413, "longitude": -73.7781, "miles": 4982}
 }
 
+# Dictionary to store all the information about their fleet
+fleetDict = {
+    "A321-Neo": {"seats": 189, "economySeats": 128, "extraComfortSeats": 44, "firstClassSeats": 16, "numberOfPlanes": 18},
+    "A330": {"seats": 278, "economySeats": 200, "extraComfortSeats": 60, "firstClassSeats": 18, "numberOfPlanes": 24},
+    "B787": {"seats": 300, "economySeats": 187, "extraComfortSeats": 79, "firstClassSeats": 34, "numberOfPlanes": 2},
+    "B717": {"seats": 128, "economySeats": 128, "extraComfortSeats": 0, "firstClassSeats": 8, "numberOfPlanes": 120},
+}
+
 #Df with the choices of the user and what their airports they want to fly from are
 userChoiceDf = None
 
@@ -53,23 +62,19 @@ def end():
     Purpose: Route to the end and display statistics from the last and previous runs
     """
     # Get the operating prices for the flights
-    userChoiceDf['Operating Cost ALL Flights'] = getPrices(userChoiceDf)
+    A321NEOdf = getPrices(userChoiceDf, fleetDict)
 
-    # Convert the columns to float
-    userChoiceDf['Operating Cost ALL Flights'] = userChoiceDf['Operating Cost ALL Flights'].astype(float)
-    userChoiceDf['numPlanes'] = userChoiceDf['numPlanes'].astype(int)
+    
+
+    # userChoiceDf['Seats Filled A321-NEO'] = int(round(Q2Load * fleetDict['A321-Neo']['seats']))
+    # userChoiceDf['Seats Filled A330'] = int(round(Q2Load * fleetDict['A330']['seats']))
+    # userChoiceDf['Seats Filled B787'] = int(round(Q2Load * fleetDict['B787']['seats']))
 
     # Get the operating cost per flight
-    userChoiceDf['Operating Cost PER Flight'] = userChoiceDf['Operating Cost ALL Flights'].div(userChoiceDf['numPlanes'])
 
-    #Round the columns to 2 decimal places
-    cols_to_round = ['Operating Cost PER Flight', 'Operating Cost ALL Flights']
-    userChoiceDf[cols_to_round] = userChoiceDf[cols_to_round].round(2)
+    print(A321NEOdf)
 
-    # Convert the numPlanes to string
-    userChoiceDf['numPlanes'] = userChoiceDf['numPlanes'].astype(str)
-
-    return render_template('end.html',userChoiceDf=userChoiceDf)
+    return render_template('end.html',A321NEOdf=A321NEOdf, fleetDict=fleetDict)
 
 @app.route('/process_form', methods=['POST'])
 def process_form():
@@ -80,17 +85,28 @@ def process_form():
 
     #Get the list of airports and make a dictionary of the num of airplanes
     selectedAiports = request.form.getlist('selectedAirports')
-    numPlanes = {airport: int(request.form.get(f'numAirplanes[{airport}]', 0)) for airport in selectedAiports}
+    numPlanesA321NEO = {airport: int(request.form.get(f'numAirplanesA321NEO[{airport}]', 0)) for airport in selectedAiports}
+    numPlanesA330 = {airport: int(request.form.get(f'numAirplanesA330[{airport}]', 0)) for airport in selectedAiports}
+    numPlanesB787 = {airport: int(request.form.get(f'numAirplanesB787[{airport}]', 0)) for airport in selectedAiports}
 
     #Create a df of what was submitted
-    planesDf = pd.DataFrame.from_dict(numPlanes, orient='index')
+    planesDf = pd.DataFrame([numPlanesA321NEO, numPlanesA330, numPlanesB787]).T
 
-    #Rename the first column numPlanes
-    planesDf.columns = ['numPlanes'] + list(planesDf.columns[1:])
+    #Rename the columns
+    planesDf.columns = ['numPlanesA321NEO', 'numPlanesA330', 'numPlanesB787']
+    
+    # Drop columns that have 0 all across
+    planesDf = planesDf.loc[~(planesDf[['numPlanesA321NEO', 'numPlanesA330', 'numPlanesB787']] == 0).all(axis=1)]
 
     #Merge with the original dictionary with the ICAO, and locations of airports
     originalDictDf = pd.DataFrame.from_dict(airportDict, orient='index')
     userChoiceDf = pd.merge(originalDictDf, planesDf, left_index=True, right_index=True)
+
+    # If planesDf is empty, then redirect to the index
+    if planesDf.empty:
+        # If planesDf is empty, then redirect to the index
+        if planesDf.empty:
+            return redirect('/')
 
     # Redirect to the review template
     return render_template('success.html', planesDf=planesDf)
@@ -115,60 +131,6 @@ def add_marker(hour):
 
     return render_template('display.html', header=header, mapBody=mapBody, script=script, hour=hour, next_hour= hour + 1)
 
-def getPrices(df):
-    """
-    Purpose:
-        Return a list of prices for the flights total profit
-
-    ARGS:
-        df dataframe: This is the dataframe that the user chose to simulate
-    """
-    print(df)
-    priceList = []
-
-    # Get the Operating Cost Per ASM from https://newsroom.hawaiianairlines.com/releases/hawaiian-holdings-reports-2023-fourth-quarter-and-full-year-financial-results
-    operatingCostPerASM = 0.149
-
-    #Get the total miles for the flight
-    for airport,data in df.iterrows():
-        miles = df.loc[airport, 'miles']
-        planeNum = userChoiceDf.loc[airport, 'numPlanes']
-
-        #Get the price for the flight
-        price = miles * operatingCostPerASM * planeNum
-        priceList.append("{:.2f}".format(float(price)))
-
-    # #For each airport in df get the price
-    # for airport,data in df.iterrows():
-    #     #Remove the K from ICAO
-    #     airportInitials = df.loc[airport, 'ICAO']
-    #     airportInitials = airportInitials[1:]
-
-    #     #Get plane Num for that airport in the simulation
-    #     planeNum = userChoiceDf.loc[airport, 'numPlanes']
-
-    #     #Get best offer for the flight
-    #     try:
-    #         response = amadeus.shopping.flight_offers_search.get(
-    #             originLocationCode=airportInitials, 
-    #             destinationLocationCode='HNL',
-    #             departureDate='2024-01-11',
-    #             returnDate='2024-01-18',
-    #             adults=2,
-    #             currencyCode="USD"
-    #             )
-    #         first_offer = response.data[0]
-    #         price = first_offer['price']['grandTotal']
-
-    #         #Multiply times number of planes
-    #         price = float(price) * planeNum
-
-    #         priceList.append("{:.2f}".format(float(price)))
-    #     except ResponseError as error:
-    #         print(error)
-
-    return priceList
-
 
 def matchHourRow(df, matchHour, path, airport, simHour, color, map, planeNum):
     """
@@ -189,6 +151,7 @@ def matchHourRow(df, matchHour, path, airport, simHour, color, map, planeNum):
 
     #Find corresponding data with the hour point
     while True:
+        print(matchHour)
         rowNum = df[df['hour'] == str(matchHour)].index
         #If match found then break by making rowNum equal to the first data point that matches with hour
         if not rowNum.empty:
@@ -207,11 +170,14 @@ def matchHourRow(df, matchHour, path, airport, simHour, color, map, planeNum):
             if matchHour < 10:
                 matchHour = '0' + str(matchHour)
 
+    
+    rowNum = rowNum + 1
+
     #If first point
     if simHour == 0:
         folium.Marker(path[0], popup=f'Start of Flight from: {airport}!', icon=folium.Icon(color=color)).add_to(map)
     #If the last row is = to the length of the dataframe then the flight is complete!
-    elif rowNum + 1 == len(path):
+    elif rowNum == len(path):
         folium.PolyLine(path[:rowNum], popup=f'Flight Number {planeNum} from: {airport} Complete!', color=color).add_to(map)
         folium.Marker(path[-1], popup=f'Flight Number {planeNum} from: {airport} Complete!', icon=folium.Icon(color=color)).add_to(map)
     #If flight still ongoing 
@@ -219,6 +185,7 @@ def matchHourRow(df, matchHour, path, airport, simHour, color, map, planeNum):
         #Make the line and if there is no match for the current hour (!firstAttempt) then make a marker as well to inform
         folium.PolyLine(path[:rowNum], popup=f'Departure Airport: {airport} Current Hour of Flight: {simHour}', color=color).add_to(map)
         if not firstAttempt:
+            rowNum = rowNum - 1
             folium.Marker(path[rowNum], popup=f'Departure Airport: {airport}. Waiting for points! Last Hour Shown of Flight: {pastHour}', icon=folium.Icon(color=color)).add_to(map)
         
     return map
@@ -276,7 +243,7 @@ def getFlightInfo(simHour, userChoiceDf):
     for airport,data in userChoiceDf.iterrows():
         #Get num of planes
         try:
-            planeNum = userChoiceDf.loc[airport, 'numPlanes']
+            planeNum = userChoiceDf.loc[airport, 'numPlanesA321NEO'] + userChoiceDf.loc[airport, 'numPlanesA330'] + userChoiceDf.loc[airport, 'numPlanesB787']
         except KeyError:
             print(f"Error: Airport '{airport}' not found in the DataFrame.")
 
@@ -294,6 +261,7 @@ def getFlightInfo(simHour, userChoiceDf):
 
         # Convert the list of dictionaries to a Pandas DataFrame
         df = pd.DataFrame(data_list)
+
 
         #Get the starting hour and add the hour of the simulation to the starting hour.
         #   This number matches the database hour. It doesn't necessarily correlate to the simulation hour that is shown above the map

@@ -15,18 +15,26 @@
                 <thead>
                     <tr>
                         <th>Airport Name</th>
-                        <th>Number of Airplanes</th>
-                        <th>Operating Cost PER Flight</th>
-                        <th>Operating Cost ALL Flights</th>
+                        <th>Flight Name</th>
+                        <th>Seats Available</th>
+                        <th>Seats Filled</th>
+                        <th>Operating Cost</th>
+                        <th>Charge to Break Even</th>
+                        <th>Total Profit</th>
+                        <th>Net Revenue</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for airport, col in userChoiceDf.iterrows() %}
+                    {% for airport, col in A321NEOdf.iterrows() %}
                         <tr>
-                            <td>{{ airport }}</td>
-                            <td>{{ col['numPlanes'] }}</td>
-                            <td>{{ col['Operating Cost PER Flight'] }}</td>
-                            <td>{{ col['Operating Cost ALL Flights'] }}</td>
+                            <td>{{ col['Airport'] }}</td>
+                            <td>{{ col['FlightName'] }}</td>
+                            <td>{{ col['AllSeats'] }}</td>
+                            <td>{{ col['OccupiedSeats'] }}</td>
+                            <td>{{ col['TotalCost'] }}</td>
+                            <td>{{ col['ChargePerPassenger'] }}</td>
+                            <td>{{ col['TotalProfit'] }}</td>
+                            <td>{{ col['NetRevenue'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
