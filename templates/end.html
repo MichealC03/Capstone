@@ -11,15 +11,19 @@
 
     <form action="/" method="POST"></form>
         <div class="container">
-            <table id="example" class="table table-striped" style="width:100%">
+            <h3>Airbus A321NEO</h3>
+            <table id="A321NEO" class="table table-striped" style="width:100%">
                 <thead>
                     <tr>
                         <th>Airport Name</th>
                         <th>Flight Name</th>
                         <th>Seats Available</th>
-                        <th>Seats Filled</th>
+                        <th>Economy Seats (Max 128)</th>
+                        <th>Extra Comfort Seats (Max 44)</th>
+                        <th>First Class Seats (Max 16)</th>
                         <th>Operating Cost</th>
                         <th>Charge to Break Even</th>
+                        <th>Actual Charge</th>
                         <th>Total Profit</th>
                         <th>Net Revenue</th>
                     </tr>
@@ -30,12 +34,91 @@
                             <td>{{ col['Airport'] }}</td>
                             <td>{{ col['FlightName'] }}</td>
                             <td>{{ col['AllSeats'] }}</td>
-                            <td>{{ col['OccupiedSeats'] }}</td>
-                            <td>{{ col['TotalCost'] }}</td>
-                            <td>{{ col['ChargePerPassenger'] }}</td>
-                            <td>{{ col['TotalProfit'] }}</td>
-                            <td>{{ col['NetRevenue'] }}</td>
+                            <td id="A321Econ"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsEcon'] }}" onblur="handleInputChange(this, 'A321')" min="0" max="128"></td>
+                            <td id="A321Extra"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsExtraComfort'] }}" onblur="handleInputChange(this, 'A321')" min="0" max="44"></td>
+                            <td id="A321First"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsFirstClass'] }}" onblur="handleInputChange(this, 'A321')" min="0" max="16"></td>
+                            <td id="A321Total">{{ col['TotalCost'] }}</td>
+                            <td id="A321Charge">{{ col['ChargePerPassenger'] }}</td>
+                            <td id="A321Actual"><input type="number" class="seats-input" value="{{ col['ChargePerPassenger'] }}" onblur="changePrice(this, 'A321')" min="0"></td>
+                            <td id="A321TotalProfit">{{ col['TotalProfit'] }}</td>
+                            <td id="A321Revenue">{{ col['NetRevenue'] }}</td>
                         </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container">
+            <h3>Airbus A330</h3>
+            <table id="A330" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Airport Name</th>
+                        <th>Flight Name</th>
+                        <th>Seats Available</th>
+                        <th>Economy Seats (Max 200)</th>
+                        <th>Extra Comfort Seats (Max 60)</th>
+                        <th>First Class Seats (Max 18)</th>
+                        <th>Operating Cost</th>
+                        <th>Charge to Break Even</th>
+                        <th>Actual Charge</th>
+                        <th>Total Profit</th>
+                        <th>Net Revenue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for airport, col in A330df.iterrows() %}
+                    <tr>
+                        <td>{{ col['Airport'] }}</td>
+                        <td>{{ col['FlightName'] }}</td>
+                        <td>{{ col['AllSeats'] }}</td>
+                        <td id="A330Econ"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsEcon'] }}" onblur="handleInputChange(this, 'A330')" min="0" max="200"></td>
+                        <td id="A330Extra"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsExtraComfort'] }}" onblur="handleInputChange(this, 'A330')" min="0" max="60"></td>
+                        <td id="A330First"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsFirstClass'] }}" onblur="handleInputChange(this, 'A330')" min="0" max="18"></td>
+                        <td id="A330Total">{{ col['TotalCost'] }}</td>
+                        <td id="A330Charge">{{ col['ChargePerPassenger'] }}</td>
+                        <td id="A330Actual"><input type="number" class="seats-input" value="{{ col['ChargePerPassenger'] }}" onblur="changePrice(this, 'A330')" min="0"></td>
+                        <td id="A330TotalProfit">{{ col['TotalProfit'] }}</td>
+                        <td id="A330Revenue">{{ col['NetRevenue'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container">
+            <h3>Boeing 787</h3>
+            <table id="Boeing 787" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Airport Name</th>
+                        <th>Flight Name</th>
+                        <th>Seats Available</th>
+                        <th>Economy Seats (Max 187)</th>
+                        <th>Extra Comfort Seats (Max 79)</th>
+                        <th>First Class Seats (Max 34)</th>
+                        <th>Operating Cost</th>
+                        <th>Charge to Break Even</th>
+                        <th>Actual Charge</th>
+                        <th>Total Profit</th>
+                        <th>Net Revenue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for airport, col in B787df.iterrows() %}
+                    <tr>
+                        <td>{{ col['Airport'] }}</td>
+                        <td>{{ col['FlightName'] }}</td>
+                        <td>{{ col['AllSeats'] }}</td>
+                        <td id="B787Econ"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsEcon'] }}" onblur="handleInputChange(this, 'B787')" min="0" max="187"></td>
+                        <td id="B787Extra"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsExtraComfort'] }}" onblur="handleInputChange(this, 'B787')" min="0" max="79"></td>
+                        <td id="B787First"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsFirstClass'] }}" onblur="handleInputChange(this, 'B787')" min="0" max="34"></td>
+                        <td id="B787Total">{{ col['TotalCost'] }}</td>
+                        <td id="B787Charge">{{ col['ChargePerPassenger'] }}</td>
+                        <td id="B787Actual"><input type="number" class="seats-input" value="{{ col['ChargePerPassenger'] }}" onblur="changePrice(this, 'B787')" min="0"></td>
+                        <td id="B787TotalProfit">{{ col['TotalProfit'] }}</td>
+                        <td id="B787Revenue">{{ col['NetRevenue'] }}</td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -52,13 +135,134 @@
         </div>
     </form>
 
-    <script defer src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script defer src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script>
+        {{ script|safe }}
+        src="https://code.jquery.com/jquery-3.7.0.js";
+        src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js";
 
-    <script defer>
-        $(document).ready(function() {
-            ('#example').DataTable();
-        });
+        $('#example').DataTable();
+
+        function updateNewTotal(input, aircraftType) {
+            /*
+            Purpose:
+            This function calculates the new total profit and net revenue based on the new charge per passenger.
+
+            ARGS:
+            parentRow: The parent row of the input element
+            chargePerPassenger: The new charge per passenger
+            totalCost: The total cost of the flight
+            aircraftType: The type of aircraft that the user is changing the input for
+            occupiedSeatsEcon: The number of occupied economy seats
+            occupiedSeatsExtraComfort: The number of occupied extra comfort seats
+            occupiedSeatsFirstClass: The number of occupied first class seats
+            */
+
+            // Get the parent row of the input element
+            var parentRow = input.closest('tr');
+
+            // create selectors with the aircraft type
+            var totalSelector = `#${aircraftType}Total`;
+            var econSelector = `#${aircraftType}Econ input`;
+            var extraSelector = `#${aircraftType}Extra input`;
+            var firstSelector = `#${aircraftType}First input`;
+            var chargeSelector = `#${aircraftType}Actual input`;
+
+            // Get the total cost and the occupied seats
+            var totalCost = parentRow.querySelector(totalSelector).textContent.replace(/,/g, '');
+            var occupiedSeatsEcon = parentRow.querySelector(econSelector).value;
+            var occupiedSeatsExtraComfort = parentRow.querySelector(extraSelector).value;
+            var occupiedSeatsFirstClass = parentRow.querySelector(firstSelector).value;
+            var chargePerPassenger = parentRow.querySelector(chargeSelector).value;
+
+            // Calculate the new total profit
+            var totalProfit = chargePerPassenger * occupiedSeatsEcon + chargePerPassenger * 1.5 * occupiedSeatsExtraComfort + chargePerPassenger * 3 * occupiedSeatsFirstClass;
+
+            // Calculate the new net revenue
+            var netRevenue = totalProfit - totalCost;
+
+            // Update the values in the table
+            var totalProfitSelector = `#${aircraftType}TotalProfit`;
+            var netRevenueSelector = `#${aircraftType}Revenue`;
+
+            var totalProfitCell = parentRow.querySelector(totalProfitSelector);
+            var netRevenueCell = parentRow.querySelector(netRevenueSelector);
+
+            //Round to 2 decimal places
+            totalProfit = totalProfit.toFixed(2);
+            netRevenue = netRevenue.toFixed(2);
+
+            // Format the numbers with commas
+            totalProfit = totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            netRevenue = netRevenue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            totalProfitCell.textContent = totalProfit;
+            netRevenueCell.textContent = netRevenue;
+        }
+
+        function changePrice(input, aircraftType) {
+            /*
+            Purpose:
+            This function is called when the user changes the price of the ticket.
+
+            ARGS:
+            input: The input element that the user changed
+            aircraftType: The type of aircraft that the user is changing the input for
+            */
+
+            // Calculate the new total profit and net revenue
+            updateNewTotal(input, aircraftType);
+        }
+        
+
+        function handleInputChange(input, aircraftType) {
+            /*
+            Purpose:
+            This function is called when the user changes the number of occupied seats in the input field.
+
+            ARGS:
+            input: The input element that the user changed
+            aircraftType: The type of aircraft that the user is changing the input for
+            */
+
+            // Get the parent row of the input element
+            var parentRow = input.closest('tr');
+
+            // create selectors with the aircraft type
+            var totalSelector = `#${aircraftType}Total`;
+            var econSelector = `#${aircraftType}Econ input`;
+            var extraSelector = `#${aircraftType}Extra input`;
+            var firstSelector = `#${aircraftType}First input`;
+
+            // Get the total cost and the occupied seats
+            var totalCost = parentRow.querySelector(totalSelector).textContent.replace(/,/g, '');
+            var occupiedSeatsEcon = parentRow.querySelector(econSelector);
+            var occupiedSeatsExtraComfort = parentRow.querySelector(extraSelector);
+            var occupiedSeatsFirstClass = parentRow.querySelector(firstSelector);
+
+            // alert("Occupied Seats Econ: " + occupiedSeatsEcon.value);
+            // alert("Occupied Seats Extra Comfort: " + occupiedSeatsExtraComfort.value);
+            // alert("Occupied Seats First Class: " + occupiedSeatsFirstClass.value);
+
+            // Update the values of the occupied seats
+            occupiedSeatsEcon = occupiedSeatsEcon.value;
+            occupiedSeatsExtraComfort = 1.5 * occupiedSeatsExtraComfort.value;
+            occupiedSeatsFirstClass = 3 * occupiedSeatsFirstClass.value;
+
+            // Calculate the new charge per passenger
+            var sum = parseFloat(occupiedSeatsEcon) + parseFloat(occupiedSeatsExtraComfort) + parseFloat(occupiedSeatsFirstClass);
+            var newValue = parseFloat(totalCost) / sum;
+            
+            // Round the value to 2 decimal places
+            newValue = newValue.toFixed(2);
+
+            // Update the value in the table
+            var chargeSelector = `#${aircraftType}Charge`;
+            var chargePerPassengerCell = parentRow.querySelector(chargeSelector);
+            chargePerPassengerCell.textContent = newValue;
+
+            // Calculate the new total profit and net revenue
+            updateNewTotal(input, aircraftType);
+        }
     </script>
 </body>
 </html>

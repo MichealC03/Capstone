@@ -7,6 +7,24 @@
 </head>
 <body>
     <h1>Prepare the Schedule for the Day!</h1>
+    <div class="container">
+        <table class="table table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Airbus A321-NEO</th>
+                    <th>Airbus 330</th>
+                    <th>Boeing 787</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="remainingA321NEO">18</td>
+                    <td id="remainingA330">24</td>
+                    <td id="remainingB787">2</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <br>
 
     <form action="/process_form" method="POST">
@@ -27,7 +45,7 @@
                         <tr>
                             <td>{{ airport }}</td>
                             <td>{{ details['ICAO'] }}</td>
-                            <td>
+                            <td id="checked">
                                 <div class="form-check form-check-lg">
                                     <input class="form-check-input" type="checkbox" name="selectedAirports" value="{{ airport }}">
                                 </div>
@@ -52,19 +70,37 @@
                     <button type="submit" class="btn btn-info btn-lg">Submit</button>
                 </div>
             </div>
-            
         </div>
-        
     </form>
 
-    <script defer src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script defer src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-
-    <script defer>
-        $(document).ready(function() {
-            ('#example').DataTable();
+    <script>
+        document.querySelectorAll('.form-check-input, input[type="number"]').forEach(input => {
+            input.addEventListener('change', updateFirstTable);
         });
-        
+
+        function updateFirstTable() {
+            var selectedAirports = document.querySelectorAll('input[name="selectedAirports"]:checked');
+            var remainingA321NEO = 18; // Initial count of A321-NEO airplanes
+            var remainingA330 = 24; // Initial count of A330 airplanes
+            var remainingB787 = 2; // Initial count of B787 airplanes
+
+            // Loop through each selected airport and update the remaining airplane count
+            selectedAirports.forEach(airport => {
+                var numAirplanesA321NEO = parseInt(document.querySelector('input[name="numAirplanesA321NEO[' + airport.value + ']"]').value);
+                var numAirplanesA330 = parseInt(document.querySelector('input[name="numAirplanesA330[' + airport.value + ']"]').value);
+                var numAirplanesB787 = parseInt(document.querySelector('input[name="numAirplanesB787[' + airport.value + ']"]').value);
+
+                remainingA321NEO -= numAirplanesA321NEO;
+                remainingA330 -= numAirplanesA330;
+                remainingB787 -= numAirplanesB787;
+            });
+
+            // Update the remaining airplane count in the first table
+            document.getElementById('remainingA321NEO').textContent = remainingA321NEO;
+            document.getElementById('remainingA330').textContent = remainingA330;
+            document.getElementById('remainingB787').textContent = remainingB787;
+        }
+
     </script>
 </body>
 </html>
