@@ -30,6 +30,25 @@ airportDict = {
 "New York City": {"ICAO": "KJFK", "latitude": 40.6413, "longitude": -73.7781, "miles": 4982}
 }
 
+# Dictionary of a preset fleet that Hawaiian Airlines has
+airportDictPreset = {
+    "Austin": {"ICAO": "KAUS", "A321": 0, "A330": 1, "B787": 0},
+    "Boston": {"ICAO": "KBOS", "A321": 0, "A330": 1, "B787": 0},
+    "Vegas": {"ICAO": "KLAS", "A321": 1, "A330": 3, "B787": 0},
+    "Long Beach": {"ICAO": "KLGB", "A321": 1, "A330": 0, "B787": 0},
+    "Los Angeles": {"ICAO": "KLAX", "A321": 2, "A330": 4, "B787": 1},
+    "Oakland": {"ICAO": "KOAK", "A321": 2, "A330": 1, "B787": 0},
+    "Ontario": {"ICAO": "KONT", "A321": 1, "A330": 0, "B787": 0},
+    "Phoenix": {"ICAO": "KPHX", "A321": 0, "A330": 1, "B787": 1},
+    "Portland": {"ICAO": "KPDX", "A321": 1, "A330": 1, "B787": 0},
+    "Sacramento": {"ICAO": "KSMF", "A321": 1, "A330": 1, "B787": 0},
+    "San Diego": {"ICAO": "KSAN", "A321": 1, "A330": 1, "B787": 0},
+    "San Francisco": {"ICAO": "KSFO", "A321": 1, "A330": 1, "B787": 0},
+    "San Jose": {"ICAO": "KSJC", "A321": 1, "A330": 1, "B787": 0},
+    "Seattle": {"ICAO": "KSEA", "A321": 0, "A330": 2, "B787": 0},
+    "New York City": {"ICAO": "KJFK", "A321": 0, "A330": 1, "B787": 0}
+}
+
 # Dictionary to store all the information about their fleet
 fleetDict = {
     "A321NEO": {"seats": 189, "economySeats": 128, "extraComfortSeats": 44, "firstClassSeats": 16, "numberOfPlanes": 18},
@@ -46,9 +65,16 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     """
-    Purpose: Route to the index and display the airport dictionary for the user to select what they want
+    Purpose: Route to the index and display the airport dictionary with preset filled out
     """
     return render_template('index.html', airportDict=airportDict)
+
+@app.route('/index_preset')
+def indexPreset():
+    """
+    Purpose: Route to the index and display the airport dictionary for the user to select what they want
+    """
+    return render_template('indexPreset.html', airportDict=airportDictPreset)
 
 @app.route('/analytics_Factors')
 def factors():
@@ -58,7 +84,9 @@ def factors():
 def submit_load_factor():
     load_factor = request.form['factor_load_percentage_input']
     CASM = request.form['operating_cost_per_available_seat_mile_input']
-    return redirect('/end?load_factor={}&CASM={}'.format(load_factor, CASM))
+    extraComfort = request.form['extra_comfort_multiplier']
+    firstClass = request.form['first_class_multiplier']
+    return redirect('/end?load_factor={}&CASM={}&extraComfort={}&firstClass={}'.format(load_factor, CASM, extraComfort, firstClass))
 
 @app.route('/end')
 def end():
@@ -69,11 +97,19 @@ def end():
     # Retrieve load factor and CASM from request parameters
     load_factor = request.args.get('load_factor')
     CASM = request.args.get('CASM')
+    extraComfort = request.args.get('extraComfort')
+    firstClass = request.args.get('firstClass')
 
     # Get the operating prices for the flights
-    A321NEOdf, A330df, B787df = getPrices(userChoiceDf, fleetDict, float(load_factor), float(CASM))
+    A321NEOdf, A330df, B787df, totalDf = getPrices(userChoiceDf, fleetDict, float(load_factor), float(CASM), float(extraComfort), float(firstClass))
 
-    return render_template('end.html',A321NEOdf=A321NEOdf, A330df = A330df, B787df = B787df)
+    # print first 7 cols of totalDf
+    print(totalDf.iloc[:, :7])
+
+    #print the last 7 cols of totalDf
+    print(totalDf.iloc[:, 7:])
+
+    return render_template('end.html',A321NEOdf=A321NEOdf, A330df = A330df, B787df = B787df, totalDf = totalDf, extraComfortMult=float(extraComfort), firstClassMult=float(firstClass))
 
 @app.route('/process_form', methods=['POST'])
 def process_form():

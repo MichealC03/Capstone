@@ -27,7 +27,6 @@ def matchHourRow(df, matchHour, path, airport, simHour, color, map, planeNum):
 
     #Find corresponding data with the hour point
     while True:
-        print(matchHour)
         rowNum = df[df['hour'] == str(matchHour)].index
         #If match found then break by making rowNum equal to the first data point that matches with hour
         if not rowNum.empty:
@@ -83,7 +82,7 @@ def placeMarker(df, airport, map, matchHour, planeNum, simHour):
     path = df[['lat', 'lon']].values.tolist()
 
     #Colors array
-    colorArr = ['blue', 'red', 'green', 'orange', 'purple']
+    colorArr = ['darkblue', 'red', 'darkgreen', 'orange', 'purple', 'lightblue', 'lightgreen']
 
     for flight in range(planeNum):
         if(simHour >= 3*flight):

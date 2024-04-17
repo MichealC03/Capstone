@@ -19,6 +19,9 @@
                             Factor Name
                         </th>
                         <th>
+                            Description
+                        </th>
+                        <th>
                             1st Quarter
                         </th>
                         <th>
@@ -40,7 +43,8 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Factor Load Percentage</td>
+                        <td>Factor Load</td>
+                        <td>Percentage of seats filled</td>
                         <td>78.2</td>
                         <td>86.7</td>
                         <td>86.1</td>
@@ -49,7 +53,8 @@
                         <td><input type="number" name="factor_load_percentage_input" value="83.63" min="75.0" max="90" step=".01"/></td>
                     </tr>
                     <tr>
-                        <td>Operating Cost Per Available Seat Mile (cents)</td>
+                        <td>CASM</td>
+                        <td>Cost per available seat mile (in cents)</td>
                         <td>14.85</td>
                         <td>14.29</td>
                         <td>15.14</td>
@@ -57,7 +62,26 @@
                         <td>14.9</td>
                         <td><input type="number" name="operating_cost_per_available_seat_mile_input" value="14.9" min="13.5" max="16" step=".01"/></td>
                     </tr>
-
+                    <tr>
+                        <td>Extra Comfort Price Factor</td>
+                        <td>Multiplier to calculate the price increase for extra comfort seats</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><input type="number" name="extra_comfort_multiplier" value="1.5" step=".01" style="width: 55%" /></td>
+                    </tr>
+                    <tr>
+                        <td>First Class Price Factor</td>
+                        <td>This is the multiplier to calculate the price increase for first class seats</td>
+                        <td><input type="hidden" name="hidden_value_1" value="0.0" /></td>
+                        <td><input type="hidden" name="hidden_value_2" value="0.0" /></td>
+                        <td><input type="hidden" name="hidden_value_3" value="0.0" /></td>
+                        <td><input type="hidden" name="hidden_value_4" value="0.0" /></td>
+                        <td><input type="hidden" name="hidden_value_5" value="0.0" /></td>
+                        <td><input type="number" name="first_class_multiplier" value="3.0" step=".01" style="width: 55%" /></td>
+                    </tr>
                 </tbody>
             </table>
 

@@ -34,12 +34,12 @@
                             <td>{{ col['Airport'] }}</td>
                             <td>{{ col['FlightName'] }}</td>
                             <td>{{ col['AllSeats'] }}</td>
-                            <td id="A321Econ"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsEcon'] }}" onblur="handleInputChange(this, 'A321')" min="0" max="128"></td>
-                            <td id="A321Extra"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsExtraComfort'] }}" onblur="handleInputChange(this, 'A321')" min="0" max="44"></td>
-                            <td id="A321First"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsFirstClass'] }}" onblur="handleInputChange(this, 'A321')" min="0" max="16"></td>
+                            <td id="A321Econ"><input type="number" class="economy-row seats-input" value="{{ col['OccupiedSeatsEcon'] }}" onchange="callFunctions(this, 'econ', 'A321')"min="0" max="128"></td>
+                            <td id="A321Extra"><input type="number" class="extraComfort-row seats-input" value="{{ col['OccupiedSeatsExtraComfort'] }}" onchange="callFunctions(this, 'extraComfort', 'A321')"min="0" max="44"></td>
+                            <td id="A321First"><input type="number" class="firstClass-row seats-input" value="{{ col['OccupiedSeatsFirstClass'] }}" onchange="callFunctions(this, 'firstClass', 'A321')" min="0" max="16"></td>
                             <td id="A321Total">{{ col['TotalCost'] }}</td>
                             <td id="A321Charge">{{ col['ChargePerPassenger'] }}</td>
-                            <td id="A321Actual"><input type="number" class="seats-input" value="{{ col['ChargePerPassenger'] }}" onblur="changePrice(this, 'A321')" min="0"></td>
+                            <td id="A321Actual"><input type="number" class="seats-input" value="{{ col['ChargePerPassenger'] }}" onchange="changePrice(this, 'A321')" min="0"></td>
                             <td id="A321TotalProfit">{{ col['TotalProfit'] }}</td>
                             <td id="A321Revenue">{{ col['NetRevenue'] }}</td>
                         </tr>
@@ -72,12 +72,12 @@
                         <td>{{ col['Airport'] }}</td>
                         <td>{{ col['FlightName'] }}</td>
                         <td>{{ col['AllSeats'] }}</td>
-                        <td id="A330Econ"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsEcon'] }}" onblur="handleInputChange(this, 'A330')" min="0" max="200"></td>
-                        <td id="A330Extra"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsExtraComfort'] }}" onblur="handleInputChange(this, 'A330')" min="0" max="60"></td>
-                        <td id="A330First"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsFirstClass'] }}" onblur="handleInputChange(this, 'A330')" min="0" max="18"></td>
+                        <td id="A330Econ"><input type="number" class="economy-row seats-input" value="{{ col['OccupiedSeatsEcon'] }}" onchange="callFunctions(this, 'econ', 'A330')" min="0" max="200"></td>
+                        <td id="A330Extra"><input type="number" class="extraComfort-row seats-input" value="{{ col['OccupiedSeatsExtraComfort'] }}" onchange="callFunctions(this, 'extraComfort', 'A330')" min="0" max="60"></td>
+                        <td id="A330First"><input type="number" class="firstClass-row seats-input" value="{{ col['OccupiedSeatsFirstClass'] }}" onchange="callFunctions(this, 'firstClass', 'A330')" min="0" max="18"></td>
                         <td id="A330Total">{{ col['TotalCost'] }}</td>
                         <td id="A330Charge">{{ col['ChargePerPassenger'] }}</td>
-                        <td id="A330Actual"><input type="number" class="seats-input" value="{{ col['ChargePerPassenger'] }}" onblur="changePrice(this, 'A330')" min="0"></td>
+                        <td id="A330Actual"><input type="number" class="seats-input" value="{{ col['ChargePerPassenger'] }}" onchange="changePrice(this, 'A330')" min="0"></td>
                         <td id="A330TotalProfit">{{ col['TotalProfit'] }}</td>
                         <td id="A330Revenue">{{ col['NetRevenue'] }}</td>
                     </tr>
@@ -110,14 +110,46 @@
                         <td>{{ col['Airport'] }}</td>
                         <td>{{ col['FlightName'] }}</td>
                         <td>{{ col['AllSeats'] }}</td>
-                        <td id="B787Econ"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsEcon'] }}" onblur="handleInputChange(this, 'B787')" min="0" max="187"></td>
-                        <td id="B787Extra"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsExtraComfort'] }}" onblur="handleInputChange(this, 'B787')" min="0" max="79"></td>
-                        <td id="B787First"><input type="number" class="seats-input" value="{{ col['OccupiedSeatsFirstClass'] }}" onblur="handleInputChange(this, 'B787')" min="0" max="34"></td>
+                        <td id="B787Econ"><input type="number" class="economy-row seats-input" value="{{ col['OccupiedSeatsEcon'] }}" onchange="callFunctions(this, 'econ',  'B787')" min="0" max="187"></td>
+                        <td id="B787Extra"><input type="number" class="extraComfort-row seats-input" value="{{ col['OccupiedSeatsExtraComfort'] }}" onchange="callFunctions(this, 'extraComfort', 'B787')" min="0" max="79"></td>
+                        <td id="B787First"><input type="number" class="firstClass-row seats-input" value="{{ col['OccupiedSeatsFirstClass'] }}" onchange="callFunctions(this, 'firstClass',  'B787')" min="0" max="34"></td>
                         <td id="B787Total">{{ col['TotalCost'] }}</td>
                         <td id="B787Charge">{{ col['ChargePerPassenger'] }}</td>
-                        <td id="B787Actual"><input type="number" class="seats-input" value="{{ col['ChargePerPassenger'] }}" onblur="changePrice(this, 'B787')" min="0"></td>
+                        <td id="B787Actual"><input type="number" class="seats-input" value="{{ col['ChargePerPassenger'] }}" onchange="changePrice(this, 'B787')" min="0"></td>
                         <td id="B787TotalProfit">{{ col['TotalProfit'] }}</td>
                         <td id="B787Revenue">{{ col['NetRevenue'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container">
+            <h3>Total</h3>
+            <table id="Total" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Total Flights</th>
+                        <th>All Seats Filled</th>
+                        <th>Economy Seats Filled</th>
+                        <th>Extra Comfort Seats Filled</th>
+                        <th>First Class Seats Filled</th>
+                        <th>Total Operation Cost</th>
+                        <th>Total Profit</th>
+                        <th>Total Net Revenue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for airport, col in totalDf.iterrows() %}
+                    <tr>
+                        <td>{{ col['TotalFlights'] }}</td>
+                        <td id="AllSeatsPercentage">{{ "{:.2f}%".format((col['OccupiedSeats'] / col['TotalSeats']) * 100) }}</td>
+                        <td id="EconPercentage">{{ "{:.2f}%".format((col['OccupiedSeatsEcon'] / col['TotalSeatsEcon']) * 100) }}</td>
+                        <td id="ExtraComfortPercentage">{{ "{:.2f}%".format((col['OccupiedSeatsExtraComfort'] / col['TotalSeatsExtraComfort']) * 100) }}</td>
+                        <td id="FirstClassPercentage">{{ "{:.2f}%".format((col['OccupiedSeatsFirstClass'] / col['TotalSeatsFirstClass']) * 100) }}</td>
+                        <td id="TotalCost">{{ col['TotalCost'] }}</td>
+                        <td id="TotalProfit">{{ col['TotalProfit'] }}</td>
+                        <td id="TotalNetRevenue">0</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -135,12 +167,67 @@
         </div>
     </form>
 
+    <input type="hidden" id="extraComfortMult" value="{{ extraComfortMult }}">
+    <input type="hidden" id="firstClassMult" value="{{ firstClassMult }}">
+
+    <input type="hidden" id="OccupiedSeats" value="{{ totalDf['OccupiedSeats'].iloc[0] }}">
+    <input type="hidden" id="TotalSeats" value="{{ totalDf['TotalSeats'].iloc[0] }}">
+    <input type="hidden" id="OccupiedSeatsEcon" value="{{ totalDf['OccupiedSeatsEcon'].iloc[0] }}">
+    <input type="hidden" id="TotalSeatsEcon" value="{{ totalDf['TotalSeatsEcon'].iloc[0] }}">
+    <input type="hidden" id="OccupiedSeatsExtraComfort" value="{{ totalDf['OccupiedSeatsExtraComfort'].iloc[0] }}">
+    <input type="hidden" id="TotalSeatsExtraComfort" value="{{ totalDf['TotalSeatsExtraComfort'].iloc[0] }}">
+    <input type="hidden" id="OccupiedSeatsFirstClass" value="{{ totalDf['OccupiedSeatsFirstClass'].iloc[0] }}">
+    <input type="hidden" id="TotalSeatsFirstClass" value="{{ totalDf['TotalSeatsFirstClass'].iloc[0] }}">
+
+
     <script>
         {{ script|safe }}
         src="https://code.jquery.com/jquery-3.7.0.js";
         src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js";
 
         $('#example').DataTable();
+
+        function callFunctions(input, seatType, aircraftType) {
+            /*
+            Purpose:
+            This function calls the updateSeats and handleInputChange functions.
+
+            ARGS:
+            input: The input element that the user changed
+            seatType: The type of class that the user is changing the input for
+            aircraftType: The type of aircraft that the user is changing the input for
+            */
+
+            // Call the updateSeats function
+            updateSeats(input, seatType);
+
+            // Call the handleInputChange function
+            handleInputChange(input, aircraftType);
+        }
+
+        function updateTotalValueTable(oldProfit, newProfit) {
+            /*
+            Purpose:
+            This function updates the percentages of seats filled in the total table.
+            It also increases the total operation cost, and profit. Then net revenue updates based on that
+
+            ARGS:
+            oldProfit: The old profit value
+            newProfit: The new profit value
+            */
+
+            // Update the total profit and net revenue
+            var totalProfit = parseFloat(document.getElementById('TotalProfit').textContent.replace(/,/g, ''));
+            var newTotalProfit = totalProfit + newProfit - oldProfit;
+
+            var totalCost = parseFloat(document.getElementById('TotalCost').textContent.replace(/,/g, ''));
+
+            var netRevenue = newTotalProfit - totalCost;
+
+            // Update the values in the table
+            document.getElementById('TotalProfit').textContent = newTotalProfit.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            document.getElementById('TotalNetRevenue').textContent = netRevenue.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
 
         function updateNewTotal(input, aircraftType) {
             /*
@@ -172,10 +259,18 @@
             var occupiedSeatsEcon = parentRow.querySelector(econSelector).value;
             var occupiedSeatsExtraComfort = parentRow.querySelector(extraSelector).value;
             var occupiedSeatsFirstClass = parentRow.querySelector(firstSelector).value;
-            var chargePerPassenger = parentRow.querySelector(chargeSelector).value;
+            var chargePerPassenger = parseFloat(parentRow.querySelector(chargeSelector).value);
+
+            // Get the extra comfort and first class multipliers
+            var extraComfortMult = parseFloat(document.getElementById('extraComfortMult').value);
+            var firstClassMult = parseFloat(document.getElementById('firstClassMult').value);
 
             // Calculate the new total profit
-            var totalProfit = chargePerPassenger * occupiedSeatsEcon + chargePerPassenger * 1.5 * occupiedSeatsExtraComfort + chargePerPassenger * 3 * occupiedSeatsFirstClass;
+            var econProfit = chargePerPassenger * occupiedSeatsEcon;
+            var extraProfit = chargePerPassenger * extraComfortMult * occupiedSeatsExtraComfort;
+            var firstProfit = chargePerPassenger * firstClassMult * occupiedSeatsFirstClass;
+
+            var totalProfit = econProfit + extraProfit + firstProfit;
 
             // Calculate the new net revenue
             var netRevenue = totalProfit - totalCost;
@@ -184,6 +279,7 @@
             var totalProfitSelector = `#${aircraftType}TotalProfit`;
             var netRevenueSelector = `#${aircraftType}Revenue`;
 
+            // Get the cells to update
             var totalProfitCell = parentRow.querySelector(totalProfitSelector);
             var netRevenueCell = parentRow.querySelector(netRevenueSelector);
 
@@ -191,10 +287,15 @@
             totalProfit = totalProfit.toFixed(2);
             netRevenue = netRevenue.toFixed(2);
 
+            // Update the values in the total table using the old profit and new profit
+            var oldTotalProfit = parseFloat(parentRow.querySelector(totalProfitSelector).textContent.replace(/,/g, ''));
+            updateTotalValueTable(oldTotalProfit, parseFloat(totalProfit));
+
             // Format the numbers with commas
             totalProfit = totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             netRevenue = netRevenue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+            // Update the values in the table
             totalProfitCell.textContent = totalProfit;
             netRevenueCell.textContent = netRevenue;
         }
@@ -212,7 +313,62 @@
             // Calculate the new total profit and net revenue
             updateNewTotal(input, aircraftType);
         }
-        
+
+        function updateSeats(input, type) {
+            /*
+            Purpose:
+            This function calculates the percentage of seats filled in the table.
+
+            ARGS:
+            input: The input element that the user changed
+            type: The type of class that the user is changing the input for
+            */
+
+            // Get the parent row of the input element
+            var parentRow = input.closest('tr');
+
+            // if type is economy then selector = .economy-row
+            if(type == 'econ') {
+                var inputSelector = '.economy-row';
+                var hiddenSelector = 'TotalSeatsEcon';
+                var percentageSelector = 'EconPercentage';
+            } 
+            else if(type == 'extraComfort') 
+            {
+                var inputSelector = '.extraComfort-row';
+                var hiddenSelector = 'TotalSeatsExtraComfort';
+                var percentageSelector = 'ExtraComfortPercentage';
+
+            }
+            else if(type == 'firstClass') 
+            {
+                var inputSelector = '.firstClass-row';
+                var hiddenSelector = 'TotalSeatsFirstClass';
+                var percentageSelector = 'FirstClassPercentage';   
+            }
+
+            // Get all input fields with class 'seats-input' within elements with class 'economy-row'
+            var economyInputs = document.querySelectorAll(inputSelector);
+
+            // Initialize variable to store the total occupied seats
+            var initialOccupiedSeats = 0;
+
+            // Iterate through each economy input field
+            economyInputs.forEach(function(inputField) {
+                // Get the value of occupied seats from the input field and parse it as an integer
+                var occupiedSeats = parseInt(inputField.value);
+
+                // Add the occupied seats from this input field to the total
+                initialOccupiedSeats += occupiedSeats;
+            });
+
+            // Calculate the new percentage of seats filled
+            var totalSeats = parseInt(document.getElementById(hiddenSelector).value);
+            var percentSeats = (initialOccupiedSeats / totalSeats) * 100;
+
+            // Update the value in the table
+            document.getElementById(percentageSelector).textContent = percentSeats.toFixed(2) + '%';
+        }
 
         function handleInputChange(input, aircraftType) {
             /*
@@ -238,15 +394,15 @@
             var occupiedSeatsEcon = parentRow.querySelector(econSelector);
             var occupiedSeatsExtraComfort = parentRow.querySelector(extraSelector);
             var occupiedSeatsFirstClass = parentRow.querySelector(firstSelector);
+            
+            // Get the extra comfort and first class multipliers
+            var extraComfortMult = parseFloat(document.getElementById('extraComfortMult').value);
+            var firstClassMult = parseFloat(document.getElementById('firstClassMult').value);
 
-            // alert("Occupied Seats Econ: " + occupiedSeatsEcon.value);
-            // alert("Occupied Seats Extra Comfort: " + occupiedSeatsExtraComfort.value);
-            // alert("Occupied Seats First Class: " + occupiedSeatsFirstClass.value);
-
-            // Update the values of the occupied seats
+            // Calculate the new number of occupied seats
             occupiedSeatsEcon = occupiedSeatsEcon.value;
-            occupiedSeatsExtraComfort = 1.5 * occupiedSeatsExtraComfort.value;
-            occupiedSeatsFirstClass = 3 * occupiedSeatsFirstClass.value;
+            occupiedSeatsExtraComfort = extraComfortMult * occupiedSeatsExtraComfort.value;
+            occupiedSeatsFirstClass = firstClassMult * occupiedSeatsFirstClass.value;
 
             // Calculate the new charge per passenger
             var sum = parseFloat(occupiedSeatsEcon) + parseFloat(occupiedSeatsExtraComfort) + parseFloat(occupiedSeatsFirstClass);

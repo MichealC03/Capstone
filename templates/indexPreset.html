@@ -41,23 +41,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for airport, details in airportDict.items() %}
+                    {% for airport, col in airportDict.items() %}
                         <tr>
                             <td>{{ airport }}</td>
-                            <td>{{ details['ICAO'] }}</td>
+                            <td>{{ col['ICAO'] }}</td>
                             <td id="checked">
                                 <div class="form-check form-check-lg">
-                                    <input class="form-check-input" type="checkbox" name="selectedAirports" value="{{ airport }}" unchecked>
+                                    <input class="form-check-input" type="checkbox" name="selectedAirports" value="{{airport}}" checked>
                                 </div>
                             </td>
                             <td>
-                                <input type="number" class="form-control form-control-sm" name="numAirplanesA321NEO[{{ airport }}]" min="0" max="5" value="0" style="width: 200px;">
+                                <input type="number" class="form-control form-control-sm" name="numAirplanesA321NEO[{{ airport }}]" min="0" max="5" value="{{ col['A321'] }}" style="width: 200px;">
                             </td>
                             <td>
-                                <input type="number" class="form-control form-control-sm" name="numAirplanesA330[{{ airport }}]" min="0" max="5" value="0" style="width: 200px;">
+                                <input type="number" class="form-control form-control-sm" name="numAirplanesA330[{{ airport }}]" min="0" max="5" value="{{ col['A330'] }}" style="width: 200px;">
                             </td>
                             <td>
-                                <input type="number" class="form-control form-control-sm" name="numAirplanesB787[{{ airport }}]" min="0" max="5" value="0" style="width: 200px;">
+                                <input type="number" class="form-control form-control-sm" name="numAirplanesB787[{{ airport }}]" min="0" max="5" value="{{ col['B787'] }}" style="width: 200px;">
                             </td>
                         </tr>
                     {% endfor %}
@@ -70,7 +70,7 @@
                     <button type="submit" class="btn btn-info btn-lg">Submit</button>
                 </div>
                 <div class="col-lg-3">
-                    <a href="/index_preset" class="btn btn-success btn-lg mb-3" role="button">Import Schedule</a>
+                    <a href="/" class="btn btn-danger btn-lg" role="button">Back to Home</a>
                 </div>
             </div>
         </div>
@@ -80,6 +80,9 @@
         document.querySelectorAll('.form-check-input, input[type="number"]').forEach(input => {
             input.addEventListener('change', updateFirstTable);
         });
+
+        // Update the remaining airplane count in the first table on start
+        updateFirstTable();
 
         function updateFirstTable() {
             var selectedAirports = document.querySelectorAll('input[name="selectedAirports"]:checked');
