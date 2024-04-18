@@ -31,17 +31,17 @@
                 <tbody>
                     {% for airport, col in A321NEOdf.iterrows() %}
                         <tr>
-                            <td>{{ col['Airport'] }}</td>
-                            <td>{{ col['FlightName'] }}</td>
-                            <td>{{ col['AllSeats'] }}</td>
-                            <td id="A321Econ"><input type="number" class="economy-row seats-input" value="{{ col['OccupiedSeatsEcon'] }}" onchange="callFunctions(this, 'econ', 'A321')"min="0" max="128"></td>
-                            <td id="A321Extra"><input type="number" class="extraComfort-row seats-input" value="{{ col['OccupiedSeatsExtraComfort'] }}" onchange="callFunctions(this, 'extraComfort', 'A321')"min="0" max="44"></td>
-                            <td id="A321First"><input type="number" class="firstClass-row seats-input" value="{{ col['OccupiedSeatsFirstClass'] }}" onchange="callFunctions(this, 'firstClass', 'A321')" min="0" max="16"></td>
-                            <td id="A321Total">{{ col['TotalCost'] }}</td>
-                            <td id="A321Charge">{{ col['ChargePerPassenger'] }}</td>
-                            <td id="A321Actual"><input type="number" class="seats-input" value="{{ col['ChargePerPassenger'] }}" onchange="changePrice(this, 'A321')" min="0"></td>
-                            <td id="A321TotalProfit">{{ col['TotalProfit'] }}</td>
-                            <td id="A321Revenue">{{ col['NetRevenue'] }}</td>
+                            <td>{{ col['Airport Name'] }}</td>
+                            <td>{{ col['Flight Name'] }}</td>
+                            <td>{{ col['Seats Available'] }}</td>
+                            <td id="A321Econ"><input type="number" class="economy-row seats-input" value="{{ col['Economy Seats'] }}" onchange="callFunctions(this, 'econ', 'A321')"min="0" max="128"></td>
+                            <td id="A321Extra"><input type="number" class="extraComfort-row seats-input" value="{{ col['Extra Comfort Seats'] }}" onchange="callFunctions(this, 'extraComfort', 'A321')"min="0" max="44"></td>
+                            <td id="A321First"><input type="number" class="firstClass-row seats-input" value="{{ col['First Class Seats'] }}" onchange="callFunctions(this, 'firstClass', 'A321')" min="0" max="16"></td>
+                            <td id="A321Total">{{ col['Operating Cost'] }}</td>
+                            <td id="A321Charge">{{ col['Charge to Break Even'] }}</td>
+                            <td id="A321Actual"><input type="number" class="seats-input" value="{{ col['Actual Charge'] }}" onchange="changePrice(this, 'A321')" min="0"></td>
+                            <td id="A321TotalProfit">{{ col['Total Profit'] }}</td>
+                            <td id="A321Revenue">{{ col['Net Revenue'] }} </td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -69,17 +69,17 @@
                 <tbody>
                     {% for airport, col in A330df.iterrows() %}
                     <tr>
-                        <td>{{ col['Airport'] }}</td>
-                        <td>{{ col['FlightName'] }}</td>
-                        <td>{{ col['AllSeats'] }}</td>
-                        <td id="A330Econ"><input type="number" class="economy-row seats-input" value="{{ col['OccupiedSeatsEcon'] }}" onchange="callFunctions(this, 'econ', 'A330')" min="0" max="200"></td>
-                        <td id="A330Extra"><input type="number" class="extraComfort-row seats-input" value="{{ col['OccupiedSeatsExtraComfort'] }}" onchange="callFunctions(this, 'extraComfort', 'A330')" min="0" max="60"></td>
-                        <td id="A330First"><input type="number" class="firstClass-row seats-input" value="{{ col['OccupiedSeatsFirstClass'] }}" onchange="callFunctions(this, 'firstClass', 'A330')" min="0" max="18"></td>
-                        <td id="A330Total">{{ col['TotalCost'] }}</td>
-                        <td id="A330Charge">{{ col['ChargePerPassenger'] }}</td>
-                        <td id="A330Actual"><input type="number" class="seats-input" value="{{ col['ChargePerPassenger'] }}" onchange="changePrice(this, 'A330')" min="0"></td>
-                        <td id="A330TotalProfit">{{ col['TotalProfit'] }}</td>
-                        <td id="A330Revenue">{{ col['NetRevenue'] }}</td>
+                        <td>{{ col['Airport Name'] }}</td>
+                        <td>{{ col['Flight Name'] }}</td>
+                        <td>{{ col['Seats Available'] }}</td>
+                        <td id="A330Econ"><input type="number" class="economy-row seats-input" value="{{ col['Economy Seats'] }}" onchange="callFunctions(this, 'econ', 'A330')" min="0" max="200"></td>
+                        <td id="A330Extra"><input type="number" class="extraComfort-row seats-input" value="{{ col['Extra Comfort Seats'] }}" onchange="callFunctions(this, 'extraComfort', 'A330')" min="0" max="60"></td>
+                        <td id="A330First"><input type="number" class="firstClass-row seats-input" value="{{ col['First Class Seats'] }}" onchange="callFunctions(this, 'firstClass', 'A330')" min="0" max="18"></td>
+                        <td id="A330Total">{{ col['Operating Cost'] }}</td>
+                        <td id="A330Charge">{{ col['Charge to Break Even'] }}</td>
+                        <td id="A330Actual"><input type="number" class="seats-input" value="{{ col['Actual Charge'] }}" onchange="changePrice(this, 'A330')" min="0"></td>
+                        <td id="A330TotalProfit">{{ col['Total Profit'] }}</td>
+                        <td id="A330Revenue">{{ col['Net Revenue'] }} </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -107,17 +107,17 @@
                 <tbody>
                     {% for airport, col in B787df.iterrows() %}
                     <tr>
-                        <td>{{ col['Airport'] }}</td>
-                        <td>{{ col['FlightName'] }}</td>
-                        <td>{{ col['AllSeats'] }}</td>
-                        <td id="B787Econ"><input type="number" class="economy-row seats-input" value="{{ col['OccupiedSeatsEcon'] }}" onchange="callFunctions(this, 'econ',  'B787')" min="0" max="187"></td>
-                        <td id="B787Extra"><input type="number" class="extraComfort-row seats-input" value="{{ col['OccupiedSeatsExtraComfort'] }}" onchange="callFunctions(this, 'extraComfort', 'B787')" min="0" max="79"></td>
-                        <td id="B787First"><input type="number" class="firstClass-row seats-input" value="{{ col['OccupiedSeatsFirstClass'] }}" onchange="callFunctions(this, 'firstClass',  'B787')" min="0" max="34"></td>
-                        <td id="B787Total">{{ col['TotalCost'] }}</td>
-                        <td id="B787Charge">{{ col['ChargePerPassenger'] }}</td>
-                        <td id="B787Actual"><input type="number" class="seats-input" value="{{ col['ChargePerPassenger'] }}" onchange="changePrice(this, 'B787')" min="0"></td>
-                        <td id="B787TotalProfit">{{ col['TotalProfit'] }}</td>
-                        <td id="B787Revenue">{{ col['NetRevenue'] }}</td>
+                        <td>{{ col['Airport Name'] }}</td>
+                        <td>{{ col['Flight Name'] }}</td>
+                        <td>{{ col['Seats Available'] }}</td>
+                        <td id="B787Econ"><input type="number" class="economy-row seats-input" value="{{ col['Economy Seats'] }}" onchange="callFunctions(this, 'econ',  'B787')" min="0" max="187"></td>
+                        <td id="B787Extra"><input type="number" class="extraComfort-row seats-input" value="{{ col['Extra Comfort Seats'] }}" onchange="callFunctions(this, 'extraComfort', 'B787')" min="0" max="79"></td>
+                        <td id="B787First"><input type="number" class="firstClass-row seats-input" value="{{ col['First Class Seats'] }}" onchange="callFunctions(this, 'firstClass',  'B787')" min="0" max="34"></td>
+                        <td id="B787Total">{{ col['Operating Cost'] }}</td>
+                        <td id="B787Charge">{{ col['Charge to Break Even'] }}</td>
+                        <td id="B787Actual"><input type="number" class="seats-input" value="{{ col['Actual Charge'] }}" onchange="changePrice(this, 'B787')" min="0"></td>
+                        <td id="B787TotalProfit">{{ col['Total Profit'] }}</td>
+                        <td id="B787Revenue">{{ col['Net Revenue'] }} </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -149,7 +149,7 @@
                         <td id="FirstClassPercentage">{{ "{:.2f}%".format((col['OccupiedSeatsFirstClass'] / col['TotalSeatsFirstClass']) * 100) }}</td>
                         <td id="TotalCost">{{ col['TotalCost'] }}</td>
                         <td id="TotalProfit">{{ col['TotalProfit'] }}</td>
-                        <td id="TotalNetRevenue">0</td>
+                        <td id="TotalNetRevenue">{{ col['NetRevenue'] }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -163,9 +163,6 @@
                 <div class="col-lg-3">
                     <a href="/" class="btn btn-info btn-lg" role="button">Back to Home</a>
                 </div>
-                <div class="col-lg-3">
-                    <a href="/preset_end?load_factor={{ load_factor }}&CASM={{ CASM }}&extraComfort={{ extraComfortMult }}&firstClass={{ firstClassMult }}" class="btn btn-success btn-lg" role="button">Import Schedule</a>
-                </div>                
             </div>
         </div>
     </form>

@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, request, session
 import pymongo
 import os
 from amadeus import Client, ResponseError
-from analytics import getPrices
+from analytics import getPrices, getPreset, getPricesPreset, getTotalsPreset
 from flightMap import getFlightInfo
 
 amadeus = Client(
@@ -88,6 +88,42 @@ def submit_load_factor():
     firstClass = request.form['first_class_multiplier']
     return redirect('/end?load_factor={}&CASM={}&extraComfort={}&firstClass={}'.format(load_factor, CASM, extraComfort, firstClass))
 
+@app.route('/preset_end')
+def presetEnd():
+    """
+    Purpose: 
+        Route to the end and display statistics from a preset
+    """
+
+    # Retrieve load factor and CASM from request parameters
+    load_factor = request.args.get('load_factor')
+    CASM = request.args.get('CASM')
+    extraComfort = request.args.get('extraComfort')
+    firstClass = request.args.get('firstClass')
+
+    # Get the preset details
+    A321NEOdf = getPreset("A321Neo")
+    A330df = getPreset("A330")
+    B787df = getPreset("B787")
+
+    # Convert the CASM, extraComfort, and firstClass to floats
+    CASM = float(CASM) / 100
+    extraComfort = float(extraComfort)
+    firstClass = float(firstClass)
+
+    # Get the operating prices, total profit, and net revenue for the flights preset
+    A321NEOdf = getPricesPreset(A321NEOdf, airportDict, CASM, extraComfort, firstClass)
+    A330df = getPricesPreset(A330df, airportDict, CASM, extraComfort, firstClass)
+    B787df = getPricesPreset(B787df, airportDict, CASM, extraComfort, firstClass)
+
+    # merge all the dataframes to get the total profit and net revenue
+    totalDf = pd.concat([A321NEOdf, A330df, B787df]).reset_index(drop=True)
+
+    totalDf = getTotalsPreset(totalDf)
+    
+
+    return render_template('endPreset.html',A321NEOdf=A321NEOdf, A330df = A330df, B787df = B787df, totalDf = totalDf, extraComfortMult= extraComfort, firstClassMult=firstClass)
+
 @app.route('/end')
 def end():
     """
@@ -103,13 +139,7 @@ def end():
     # Get the operating prices for the flights
     A321NEOdf, A330df, B787df, totalDf = getPrices(userChoiceDf, fleetDict, float(load_factor), float(CASM), float(extraComfort), float(firstClass))
 
-    # print first 7 cols of totalDf
-    print(totalDf.iloc[:, :7])
-
-    #print the last 7 cols of totalDf
-    print(totalDf.iloc[:, 7:])
-
-    return render_template('end.html',A321NEOdf=A321NEOdf, A330df = A330df, B787df = B787df, totalDf = totalDf, extraComfortMult=float(extraComfort), firstClassMult=float(firstClass))
+    return render_template('end.html',A321NEOdf=A321NEOdf, A330df = A330df, B787df = B787df, totalDf = totalDf, load_factor = float(load_factor), CASM = float(CASM), extraComfortMult=float(extraComfort), firstClassMult=float(firstClass))
 
 @app.route('/process_form', methods=['POST'])
 def process_form():

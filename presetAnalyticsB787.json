@@ -1,0 +1,31 @@
+{
+  "Boeing 787": [
+    {
+      "Airport Name": "Los Angeles",
+      "Flight Name": "LAX1",
+      "Seats Available": 300,
+      "Economy Seats": 187,
+      "Extra Comfort Seats": 64,
+      "First Class Seats": 0,
+      "Operating Cost": 114253.20,
+      "Charge to Break Even": 403.72,
+      "Actual Charge": 403.72,
+      "Total Profit": 114253.20,
+      "Net Revenue": 0.00
+    },
+    {
+      "Airport Name": "Phoenix",
+      "Flight Name": "PHX1",
+      "Seats Available": 300,
+      "Economy Seats": 187,
+      "Extra Comfort Seats": 64,
+      "First Class Seats": 0,
+      "Operating Cost": 128870.10,
+      "Charge to Break Even": 455.37,
+      "Actual Charge": 455.37,
+      "Total Profit": 128870.10,
+      "Net Revenue": 0.00
+    }
+  ]
+}
+
